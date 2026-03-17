@@ -20,6 +20,10 @@ body {
     width: 200px;
     margin-bottom: 20px;
  }
+ .tenor-gif-embed {
+    max-width: 240px;
+    margin: 0 auto 20px;
+ }
  button {
     background-color: #ff1493;
     color: white;
