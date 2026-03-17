@@ -1,0 +1,40 @@
+body {
+    background-color: #1a0210; /* Dark pink/black */
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+ }
+ .container {
+    text-align: center;
+    background: rgba(255, 20, 147, 0.1);
+    padding: 40px;
+    border-radius: 20px;
+    border: 1px solid #ff1493;
+    box-shadow: 0 0 20px rgba(255, 20, 147, 0.5);
+ }
+ .cat-img {
+    width: 200px;
+    margin-bottom: 20px;
+ }
+ button {
+    background-color: #ff1493;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 18px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin: 10px;
+ }
+ button:hover {
+    transform: scale(1.1);
+    background-color: #ff69b4;
+ }
+ #noBtn {
+    position: absolute; /* Needed for the "runaway" effect */
+ }

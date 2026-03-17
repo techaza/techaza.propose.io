@@ -1,0 +1,777 @@
+<!-- <!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Proposal</title>
+    <style>
+      html,
+      body {
+        height: 100%;
+      }
+
+      :root {
+        color-scheme: light dark;
+        --card: color-mix(in oklab, Canvas 90%, CanvasText 10%);
+        --muted: color-mix(in oklab, CanvasText 58%, Canvas 42%);
+        --border: color-mix(in oklab, CanvasText 16%, Canvas 84%);
+        --shadow: color-mix(in oklab, CanvasText 14%, transparent);
+        --accent: #7c3aed;
+        --accent2: #ec4899;
+        --ok: #22c55e;
+        --radius: 18px;
+      }
+
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial,
+          sans-serif;
+        background: Canvas;
+        color: CanvasText;
+        overflow-x: hidden;
+      }
+
+      .screen {
+        min-height: 100dvh;
+        width: 100%;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+        box-sizing: border-box;
+        position: relative;
+        overflow: hidden;
+        background: url('assets/images/bg.png') center center / cover no-repeat fixed;
+      }
+
+      .screen::before,
+      .screen::after {
+        content: "";
+        position: fixed;
+        inset: -30vmax;
+        pointer-events: none;
+        filter: blur(40px);
+        opacity: 0.18;
+        z-index: 0;
+        mix-blend-mode: soft-light;
+      }
+
+      .screen::before {
+        background:
+          radial-gradient(closest-side, color-mix(in oklab, var(--accent) 55%, transparent), transparent 68%),
+          radial-gradient(closest-side, color-mix(in oklab, var(--accent2) 55%, transparent), transparent 70%);
+        transform: translate(18vmax, -10vmax);
+        animation: bgFloat1 10s ease-in-out infinite alternate;
+      }
+
+      .screen::after {
+        background:
+          radial-gradient(closest-side, color-mix(in oklab, var(--ok) 45%, transparent), transparent 70%),
+          radial-gradient(closest-side, color-mix(in oklab, CanvasText 10%, transparent), transparent 70%);
+        transform: translate(-22vmax, 16vmax);
+        animation: bgFloat2 12s ease-in-out infinite alternate;
+      }
+
+      @keyframes bgFloat1 {
+        from {
+          transform: translate(18vmax, -10vmax) scale(1);
+        }
+        to {
+          transform: translate(22vmax, -6vmax) scale(1.05);
+        }
+      }
+
+      @keyframes bgFloat2 {
+        from {
+          transform: translate(-22vmax, 16vmax) scale(1);
+        }
+        to {
+          transform: translate(-18vmax, 20vmax) scale(1.06);
+        }
+      }
+
+      .orbs {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+      }
+
+      .orb {
+        position: absolute;
+        width: 34vmax;
+        height: 34vmax;
+        border-radius: 50%;
+        filter: blur(28px);
+        opacity: 0.12;
+        background: radial-gradient(
+          closest-side,
+          color-mix(in oklab, var(--accent2) 70%, transparent),
+          transparent 70%
+        );
+        mix-blend-mode: soft-light;
+        animation: orbDrift 9s ease-in-out infinite alternate;
+      }
+
+      .orb.orb1 {
+        left: -10vmax;
+        top: -12vmax;
+        background: radial-gradient(
+          closest-side,
+          color-mix(in oklab, var(--accent) 70%, transparent),
+          transparent 70%
+        );
+        animation-duration: 11s;
+      }
+
+      .orb.orb2 {
+        right: -12vmax;
+        top: 22vmax;
+        animation-duration: 13s;
+      }
+
+      .orb.orb3 {
+        left: 18vmax;
+        bottom: -18vmax;
+        background: radial-gradient(
+          closest-side,
+          color-mix(in oklab, var(--ok) 65%, transparent),
+          transparent 70%
+        );
+        animation-duration: 12s;
+      }
+
+      @keyframes orbDrift {
+        from {
+          transform: translate3d(0, 0, 0) scale(1);
+        }
+        to {
+          transform: translate3d(4vmax, -2vmax, 0) scale(1.06);
+        }
+      }
+
+      .floaties {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        overflow: hidden;
+      }
+
+      .floaty {
+        position: absolute;
+        left: var(--x);
+        top: var(--y);
+        font-size: var(--s);
+        opacity: var(--o);
+        filter: drop-shadow(0 8px 16px color-mix(in oklab, CanvasText 10%, transparent));
+        transform: translate3d(0, 0, 0) rotate(var(--r));
+        animation:
+          floatyUp var(--d) linear infinite,
+          floatySway calc(var(--d) * 0.6) ease-in-out infinite alternate,
+          floatyFade calc(var(--d) * 0.55) ease-in-out infinite alternate;
+        animation-delay: var(--delay);
+        will-change: transform;
+      }
+
+      @keyframes floatyUp {
+        from {
+          transform: translate3d(0, 24vh, 0) rotate(var(--r));
+        }
+        to {
+          transform: translate3d(0, -120vh, 0) rotate(calc(var(--r) + 120deg));
+        }
+      }
+
+      @keyframes floatySway {
+        from {
+          margin-left: calc(var(--drift) * -1);
+        }
+        to {
+          margin-left: var(--drift);
+        }
+      }
+
+      @keyframes floatyFade {
+        0% {
+          opacity: 0;
+          filter: blur(0px)
+            drop-shadow(0 8px 16px color-mix(in oklab, CanvasText 10%, transparent));
+        }
+        30% {
+          opacity: var(--o);
+        }
+        100% {
+          opacity: 0;
+          filter: blur(0.6px)
+            drop-shadow(0 8px 16px color-mix(in oklab, CanvasText 10%, transparent));
+        }
+      }
+
+      .card {
+        width: min(860px, 100%);
+        background: color-mix(in oklab, var(--card) 92%, transparent);
+        border: 1px solid color-mix(in oklab, var(--border) 80%, transparent);
+        border-radius: var(--radius);
+        padding: 22px;
+        box-shadow: 0 18px 60px var(--shadow);
+        backdrop-filter: blur(10px);
+        position: relative;
+        z-index: 1;
+        transform: translateZ(0);
+      }
+
+      .card::before {
+        content: "";
+        position: absolute;
+        inset: -1px;
+        border-radius: calc(var(--radius) + 2px);
+        padding: 1px;
+        background: linear-gradient(
+          135deg,
+          color-mix(in oklab, var(--accent) 60%, transparent),
+          color-mix(in oklab, var(--accent2) 55%, transparent),
+          color-mix(in oklab, var(--ok) 45%, transparent)
+        );
+        -webkit-mask:
+          linear-gradient(#000 0 0) content-box,
+          linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        opacity: 0.55;
+        animation: borderGlow 4.5s ease-in-out infinite alternate;
+        pointer-events: none;
+      }
+
+      @keyframes borderGlow {
+        from {
+          opacity: 0.35;
+          filter: saturate(1) blur(0px);
+        }
+        to {
+          opacity: 0.7;
+          filter: saturate(1.2) blur(0.2px);
+        }
+      }
+
+      h1 {
+        margin: 0 0 6px;
+        font-size: clamp(1.6rem, 3.8vw, 2.4rem);
+        letter-spacing: -0.02em;
+      }
+
+      .subhead {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 10px;
+        border-radius: 999px;
+        border: 1px solid color-mix(in oklab, var(--border) 80%, transparent);
+        background: color-mix(in oklab, Canvas 86%, transparent);
+        font-weight: 700;
+        color: color-mix(in oklab, CanvasText 80%, Canvas 20%);
+        letter-spacing: 0.01em;
+      }
+
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 18%, transparent);
+      }
+
+      label {
+        display: block;
+        font-weight: 600;
+        margin: 16px 0 8px;
+      }
+
+      .field {
+        position: relative;
+      }
+
+      .field::before {
+        content: "✍️";
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1rem;
+        opacity: 0.9;
+        pointer-events: none;
+      }
+
+      input[type="text"] {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 12px 12px 12px 40px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: Canvas;
+        color: CanvasText;
+        font-size: 1rem;
+        outline: none;
+      }
+
+      input[type="text"]:focus {
+        border-color: color-mix(in oklab, var(--accent) 55%, var(--border));
+        box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 18%, transparent);
+      }
+
+      .proposal {
+        margin-top: 18px;
+        padding: 14px;
+        border-radius: 14px;
+        border: 1px solid var(--border);
+        background: color-mix(in oklab, Canvas 92%, transparent);
+      }
+
+      .proposal[hidden] {
+        display: none;
+      }
+
+      .proposal.show {
+        animation: popIn 420ms cubic-bezier(0.2, 0.9, 0.2, 1) both;
+      }
+
+      .dear {
+        margin: 0 0 10px;
+        font-size: 1.15rem;
+        font-weight: 700;
+      }
+
+      .quote {
+        margin: 0;
+        line-height: 1.55;
+        color: CanvasText;
+        font-size: 1.05rem;
+      }
+
+      .quote strong {
+        background: linear-gradient(90deg, var(--accent), var(--accent2));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .actions {
+        position: relative;
+        margin-top: 14px;
+        height: 56px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      button {
+        border: 1px solid var(--border);
+        background: Canvas;
+        color: CanvasText;
+        padding: 10px 14px;
+        border-radius: 999px;
+        font-weight: 700;
+        cursor: pointer;
+        user-select: none;
+        transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease,
+          border-color 120ms ease;
+      }
+
+      button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 24px color-mix(in oklab, CanvasText 10%, transparent);
+      }
+
+      button:active {
+        transform: translateY(0px);
+      }
+
+      button:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 18%, transparent);
+        border-color: color-mix(in oklab, var(--accent) 55%, var(--border));
+      }
+
+      .yes {
+        border-color: color-mix(in oklab, var(--accent) 60%, var(--border));
+        background: linear-gradient(
+          135deg,
+          color-mix(in oklab, var(--accent) 20%, Canvas),
+          color-mix(in oklab, var(--accent2) 18%, Canvas)
+        );
+      }
+
+      .no {
+        position: absolute;
+        left: 160px;
+        top: 0;
+        transition: transform 120ms ease;
+        touch-action: none;
+      }
+
+      .result {
+        margin-top: 14px;
+        padding: 14px;
+        border-radius: 14px;
+        border: 1px solid var(--border);
+        background: linear-gradient(
+          135deg,
+          color-mix(in oklab, var(--ok) 16%, Canvas),
+          color-mix(in oklab, var(--accent) 10%, Canvas)
+        );
+      }
+
+      .result[hidden] {
+        display: none;
+      }
+
+      .result.show {
+        animation: popIn 520ms cubic-bezier(0.2, 0.9, 0.2, 1) both;
+      }
+
+      @keyframes popIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px) scale(0.98);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      .hearts {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        margin-top: 10px;
+        color: color-mix(in oklab, var(--accent2) 70%, CanvasText 30%);
+      }
+
+      .hearts span {
+        display: inline-block;
+        animation: floatUp 1.8s ease-in-out infinite;
+      }
+
+      .hearts span:nth-child(2) {
+        animation-delay: 0.15s;
+      }
+
+      .hearts span:nth-child(3) {
+        animation-delay: 0.3s;
+      }
+
+      @keyframes floatUp {
+        0%,
+        100% {
+          transform: translateY(0);
+          opacity: 0.85;
+        }
+        50% {
+          transform: translateY(-6px);
+          opacity: 1;
+        }
+      }
+
+      .confetti {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: 10;
+      }
+
+      .confetti i {
+        position: absolute;
+        top: -10px;
+        width: 10px;
+        height: 14px;
+        border-radius: 3px;
+        opacity: 0.95;
+        transform: translate3d(0, 0, 0) rotate(0deg);
+        animation: fall 1.2s linear forwards;
+      }
+
+      @keyframes fall {
+        to {
+          transform: translate3d(var(--dx), 110vh, 0) rotate(520deg);
+          opacity: 1;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        button,
+        .no {
+          transition: none;
+        }
+
+        .screen::before,
+        .screen::after,
+        .orb,
+        .floaty,
+        .card::before {
+          animation: none;
+        }
+
+        .hearts span {
+          animation: none;
+        }
+
+        .confetti i {
+          animation: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="screen">
+      <div class="orbs" aria-hidden="true">
+        <div class="orb orb1"></div>
+        <div class="orb orb2"></div>
+        <div class="orb orb3"></div>
+      </div>
+      <div class="floaties" aria-hidden="true">
+        <span
+          class="floaty"
+          style="--x: 6vw; --y: 92vh; --s: 2.2rem; --o: 0.2; --r: -12deg; --d: 12.4s; --delay: 0.2s; --drift: 16px"
+          >🦋</span
+        >
+        <span
+          class="floaty"
+          style="--x: 14vw; --y: 35vh; --s: 1.6rem; --o: 0.16; --r: 18deg; --d: 9.2s; --delay: 1.3s; --drift: 10px"
+          >❤️</span
+        >
+        <span
+          class="floaty"
+          style="--x: 22vw; --y: 78vh; --s: 2.4rem; --o: 0.15; --r: 10deg; --d: 13.6s; --delay: 0.8s; --drift: 22px"
+          >🦋</span
+        >
+        <span
+          class="floaty"
+          style="--x: 31vw; --y: 55vh; --s: 1.2rem; --o: 0.17; --r: -22deg; --d: 7.4s; --delay: 2.1s; --drift: 12px"
+          >❤️</span
+        >
+        <span
+          class="floaty"
+          style="--x: 39vw; --y: 96vh; --s: 1.9rem; --o: 0.14; --r: 24deg; --d: 10.8s; --delay: 0.5s; --drift: 18px"
+          >🦋</span
+        >
+        <span
+          class="floaty"
+          style="--x: 47vw; --y: 18vh; --s: 1.4rem; --o: 0.15; --r: -6deg; --d: 6.8s; --delay: 1.9s; --drift: 14px"
+          >❤️</span
+        >
+        <span
+          class="floaty"
+          style="--x: 56vw; --y: 70vh; --s: 2.3rem; --o: 0.18; --r: 14deg; --d: 14s; --delay: 1.1s; --drift: 20px"
+          >🦋</span
+        >
+        <span
+          class="floaty"
+          style="--x: 63vw; --y: 42vh; --s: 1.1rem; --o: 0.14; --r: -18deg; --d: 8.6s; --delay: 2.7s; --drift: 9px"
+          >❤️</span
+        >
+        <span
+          class="floaty"
+          style="--x: 71vw; --y: 88vh; --s: 2.5rem; --o: 0.17; --r: 8deg; --d: 12.8s; --delay: 0.9s; --drift: 24px"
+          >🦋</span
+        >
+        <span
+          class="floaty"
+          style="--x: 79vw; --y: 10vh; --s: 1.7rem; --o: 0.13; --r: -10deg; --d: 7.8s; --delay: 3.1s; --drift: 12px"
+          >❤️</span
+        >
+        <span
+          class="floaty"
+          style="--x: 86vw; --y: 64vh; --s: 2rem; --o: 0.14; --r: 20deg; --d: 11.6s; --delay: 1.6s; --drift: 18px"
+          >🦋</span
+        >
+        <span
+          class="floaty"
+          style="--x: 94vw; --y: 84vh; --s: 1.3rem; --o: 0.16; --r: -24deg; --d: 9.8s; --delay: 2.4s; --drift: 10px"
+          >❤️</span
+        >
+      </div>
+
+      <main class="card" aria-live="polite">
+        <div class="subhead">
+          <div>
+            <h1>For you</h1>
+            <p>A tiny question with a big smile.</p>
+          </div>
+          <div class="badge" aria-hidden="true"><span class="dot"></span> Full Screen</div>
+        </div>
+
+        <section id="proposal" class="proposal show">
+          <p class="dear" id="dearLine">Dear User,</p>
+          <p class="quote" id="proposalQuote">
+            “From the moment I met you, my heart felt at home. Will you be my <strong>forever</strong>?”
+          </p>
+
+          <div class="actions" id="actions">
+            <button class="yes" id="yesBtn" type="button">Yes</button>
+            <button
+              class="no"
+              id="noBtn"
+              type="button"
+              tabindex="-1"
+              aria-disabled="true"
+              title="Nice try 🙂"
+            >
+              No
+            </button>
+          </div>
+
+          <div id="result" class="result" hidden>
+            <p class="dear" id="resultTitle">Congratulations, User!</p>
+            <p class="quote">
+              “It’s official: we’re a <strong>perfect match</strong>. Congratulations — let’s make forever our
+              favorite plan.”
+            </p>
+            <div class="hearts" aria-hidden="true">
+              <span>💜</span>
+              <span>💗</span>
+              <span>💜</span>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const yesBtn = document.getElementById("yesBtn");
+      const noBtn = document.getElementById("noBtn");
+      const actions = document.getElementById("actions");
+      const result = document.getElementById("result");
+      let confettiRoot = null;
+
+      function prefersReducedMotion() {
+        return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      }
+
+      function popConfetti() {
+        if (prefersReducedMotion()) return;
+
+        if (confettiRoot) confettiRoot.remove();
+        confettiRoot = document.createElement("div");
+        confettiRoot.className = "confetti";
+        document.body.appendChild(confettiRoot);
+
+        const colors = ["#7c3aed", "#ec4899", "#22c55e", "#60a5fa", "#f59e0b"];
+        const pieces = 90;
+
+        for (let i = 0; i < pieces; i++) {
+          const piece = document.createElement("i");
+          const left = Math.random() * 100;
+          const delay = Math.random() * 0.25;
+          const dx = Math.floor((Math.random() - 0.5) * 280) + "px";
+          const duration = 900 + Math.random() * 700;
+
+          piece.style.left = left + "vw";
+          piece.style.background = colors[i % colors.length];
+          piece.style.animationDelay = delay + "s";
+          piece.style.animationDuration = duration + "ms";
+          piece.style.setProperty("--dx", dx);
+          piece.style.width = 8 + Math.floor(Math.random() * 7) + "px";
+          piece.style.height = 10 + Math.floor(Math.random() * 10) + "px";
+          piece.style.borderRadius = Math.random() > 0.6 ? "999px" : "3px";
+          confettiRoot.appendChild(piece);
+        }
+
+        window.setTimeout(() => {
+          if (confettiRoot) confettiRoot.remove();
+          confettiRoot = null;
+        }, 1800);
+      }
+
+      function moveNoButton() {
+        if (actions.hidden) return;
+
+        const containerRect = actions.getBoundingClientRect();
+        const buttonRect = noBtn.getBoundingClientRect();
+
+        const padding = 6;
+        const maxX = Math.max(
+          padding,
+          containerRect.width - buttonRect.width - padding
+        );
+        const maxY = Math.max(
+          padding,
+          containerRect.height - buttonRect.height - padding
+        );
+
+        const x = Math.floor(Math.random() * maxX);
+        const y = Math.floor(Math.random() * maxY);
+
+        noBtn.style.left = "0px";
+        noBtn.style.top = "0px";
+        noBtn.style.transform = `translate(${x}px, ${y}px)`;
+      }
+
+      // Make the "No" button impossible to press.
+      ["pointerenter", "pointermove", "mouseenter", "mouseover", "touchstart"].forEach(
+        (evt) => noBtn.addEventListener(evt, moveNoButton, { passive: true })
+      );
+      noBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        moveNoButton();
+      });
+      noBtn.addEventListener("keydown", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        moveNoButton();
+      });
+
+      yesBtn.addEventListener("click", () => {
+        result.hidden = false;
+        result.classList.add("show");
+        actions.hidden = true;
+        popConfetti();
+      });
+    </script>
+  </body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For My Dearest</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container" id="screen1">
+<img src="assets/images/cat-flower.gif" alt="Cute cat with a flower" class="cat-img">
+<h1>I have something special to tell you...</h1>
+<button onclick="nextScreen(2)">Tap to Begin ✨</button>
+</div>
+<div class="container" id="screen2" style="display:none;">
+<img src="assets/images/crying-cat.gif" alt="Crying cat" class="cat-img">
+<h1>Do you trust me?</h1>
+<div class="btn-group">
+<button onclick="nextScreen(3)">Yes, I do! 💕</button>
+<button id="noBtn" onmouseover="moveButton()">No 😤</button>
+</div>
+</div>
+<div class="container" id="screen3" style="display:none;">
+<img src="assets/images/heart-cat.gif" alt="Cat with hearts" class="cat-img">
+<h1>You made me the happiest!</h1>
+<p>I promise to love you forever and always...</p>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
+ 
